@@ -1,0 +1,45 @@
+# ⚡ IGNORANDO NODE E DEPENDÊNCIAS
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# ⚡ IGNORANDO O DOCKER (se aplicável)
+docker-compose.override.yml
+.dockerignore
+postgres_data/
+
+# ⚡ IGNORANDO O PRISMA E BANCO DE DADOS
+prisma/.env
+prisma/migrations/
+prisma/db.sqlite
+prisma/dev.db
+prisma/studio.log
+
+# ⚡ IGNORANDO LOGS
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+debug.log
+
+# ⚡ IGNORANDO CONFIGURAÇÕES DO EDITOR
+.vscode/
+.idea/
+*.sublime-workspace
+
+# ⚡ IGNORANDO BUILD E CÓDIGO GERADO
+dist/
+out/
+coverage/
+.DS_Store
+Thumbs.db
+
+# ⚡ IGNORANDO CONFIGURAÇÕES DE SISTEMA
+.env
+.env.local
+.env.development
+.env.production
+.env.test

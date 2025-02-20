@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@graphql/*": ["graphql/*"],
+      "@models/*": ["models/*"],
+      "@services/*": ["services/*"],
+      "@middleware/*": ["src/middleware/*"]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["@prisma/client"]
+  },
+  "include": ["src", "node_modules/.prisma/client"]
+}

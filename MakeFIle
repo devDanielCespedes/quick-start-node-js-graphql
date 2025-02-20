@@ -1,0 +1,33 @@
+# Variáveis para os serviços no Docker
+DOCKER_BACKEND=quickstart_backend
+
+# 🔄 Atualiza o Prisma Client
+prisma-update:
+	docker exec -it $(DOCKER_BACKEND) pnpm prisma generate
+
+# 📦 Aplica migrações no banco dentro do container
+prisma-migrate:
+	docker exec -it $(DOCKER_BACKEND) pnpm prisma migrate dev --name update_schema
+
+# ⚡ Reseta o banco e aplica as migrações novamente
+prisma-reset:
+	docker exec -it $(DOCKER_BACKEND) pnpm prisma migrate reset --force
+
+# 🛠️ Roda todos os comandos do Prisma (gera cliente, aplica migração e reseta banco)
+prisma-full:
+	make prisma-update
+	make prisma-migrate
+	make prisma-reset
+
+# 🚀 Reinicia os containers do Docker
+docker-restart:
+	docker compose down
+	docker compose up -d
+
+# 🔄 Executa o Prisma Studio para visualizar os dados (fora do container)
+prisma-studio:
+	pnpm prisma studio
+
+# 🔄 Executa o Prisma Studio dentro do container
+prisma-studio-docker:
+	docker exec -it $(DOCKER_BACKEND) pnpm prisma studio
