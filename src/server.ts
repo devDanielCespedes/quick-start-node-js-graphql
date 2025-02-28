@@ -24,17 +24,17 @@ const limiter = rateLimit({
 
 // Lista de origens permitidas (exemplo: local e produção)
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://meusite.com', // TODO: Alterar para o domínio do site
-  'http://localhost:4000',
+  'https://localhost:5173',
+  'https://localhost:4000',
+  'https://quick-start-node-js-graphql-production.up.railway.app',
 ];
 
 async function startApolloServer() {
   const app = express();
 
-  // Configuração de CORS permitindo múltiplas origens
   app.use(
     cors({
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
           callback(null, true);
