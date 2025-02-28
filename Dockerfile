@@ -7,14 +7,17 @@ WORKDIR /app
 # Instala o PNPM globalmente
 RUN npm install -g pnpm
 
-# Copia apenas os arquivos essenciais para instalação de dependências
+# Copia apenas os arquivos essenciais para instalar dependências
 COPY package.json pnpm-lock.yaml ./
 
-# Instala as dependências primeiro para melhor cache no Docker
+# Instala as dependências antes de copiar o restante do código
 RUN pnpm install --frozen-lockfile
 
-# Agora copia todo o projeto (código-fonte)
+# Agora copia todo o código-fonte do projeto
 COPY . .
+
+# 🔍 Verifica se os arquivos foram copiados corretamente
+RUN ls -l /app
 
 # Gera o Prisma Client
 RUN pnpm prisma generate

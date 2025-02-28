@@ -1,11 +1,8 @@
 # ⚡ IGNORANDO NODE E DEPENDÊNCIAS
 node_modules/
-package-lock.json
-yarn.lock
 
 # ⚡ IGNORANDO O DOCKER (se aplicável)
 docker-compose.override.yml
-.dockerignore
 postgres_data/
 
 # ⚡ IGNORANDO O PRISMA E BANCO DE DADOS
