@@ -1,6 +1,5 @@
 import { GraphQLError } from 'graphql/error';
 import { prisma } from '../config/prisma';
-import { redis } from '../config/redis';
 import {
   comparePassword,
   generateAccessToken,
@@ -14,14 +13,14 @@ import {
  * Get all users (with caching)
  */
 export const getAllUsers = async () => {
-  return redis.get('getAllUsers').then(async (cachedData) => {
-    if (cachedData) {
-      return JSON.parse(cachedData);
-    }
-    const users = await prisma.user.findMany();
-    await redis.set('getAllUsers', JSON.stringify(users), 'EX', 120);
-    return users;
-  });
+  // return redis.get('getAllUsers').then(async (cachedData) => {
+  //   if (cachedData) {
+  //     return JSON.parse(cachedData);
+  //   }
+  //   const users = await prisma.user.findMany();
+  //   await redis.set('getAllUsers', JSON.stringify(users), 'EX', 120);
+  //   return users;
+  // });
 };
 
 /**
@@ -44,7 +43,7 @@ export const createUser = async (
     data: { name, email, password: hashedPassword, role },
   });
 
-  await redis.del('getAllUsers');
+  // await redis.del('getAllUsers');
 
   return newUser;
 };

@@ -17,16 +17,16 @@ const parseMs = (val: unknown) => {
   return result / 1000;
 };
 
-const envSchema = z.object({
-  PORT: z.string(),
-  DATABASE_URL: z.string().url(),
-  JWT_SECRET: z
-    .string()
-    .min(8, 'JWT_SECRET é obrigatório e deve ter pelo menos 8 caracteres'),
-  REDIS_HOST: z.string(),
-  REDIS_PORT: z.preprocess((val) => Number(val), z.number()),
-  ACCESS_TOKEN_EXPIRES: z.preprocess(parseMs, z.number()),
-  REFRESH_TOKEN_EXPIRES: z.preprocess(parseMs, z.number()),
-});
+// const envSchema = z.object({
+//   PORT: z.string(),
+//   DATABASE_URL: z.string().url(),
+//   JWT_SECRET: z
+//     .string()
+//     .min(8, 'JWT_SECRET é obrigatório e deve ter pelo menos 8 caracteres'),
+//   REDIS_HOST: z.string(),
+//   REDIS_PORT: z.preprocess((val) => Number(val), z.number()),
+//   ACCESS_TOKEN_EXPIRES: z.string(),
+//   REFRESH_TOKEN_EXPIRES: z.string(),
+// });
 
-export const env = envSchema.parse(process.env);
+// export const env = envSchema.parse(process.env);

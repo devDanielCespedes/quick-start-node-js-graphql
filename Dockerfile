@@ -23,7 +23,7 @@ RUN ls -l /app
 RUN pnpm prisma generate
 
 # Expõe a porta do servidor
-EXPOSE 4000
+EXPOSE 8080
 
 # Comando para rodar a aplicação
 CMD ["pnpm", "dev"]

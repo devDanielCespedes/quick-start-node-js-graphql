@@ -1,7 +1,5 @@
 import { GraphQLError } from 'graphql/error';
 import jwt from 'jsonwebtoken';
-import { env } from '../config/env';
-import { redis } from '../config/redis';
 
 export const authMiddleware = (required: boolean = true) => {
   return (resolver: Function) => {
@@ -19,12 +17,12 @@ export const authMiddleware = (required: boolean = true) => {
       const token = authHeader.replace('Bearer ', '');
 
       try {
-        const user = jwt.verify(token, env.JWT_SECRET);
+        const user = jwt.verify(token, process.env.JWT_SECRET || '');
         context.user = user;
       } catch (error) {
         console.error('❌ Invalid Token');
 
-        await redis.del('getAllUsers');
+        // await redis.del('getAllUsers');
 
         if (required) {
           throw new GraphQLError('Invalid Token', {

@@ -11,7 +11,6 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import jwt from 'jsonwebtoken';
-import { env } from './config/env';
 import { logger } from './config/logger';
 import { schema } from './graphql';
 
@@ -34,17 +33,27 @@ async function startApolloServer() {
 
   app.use(
     cors({
+      // origin: '*',
+      // credentials: true,
+
+      origin: '*', // Permite todas as origens (só para testar)
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
+      allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
+
+      // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      // origin: (origin, callback) => {
+      //   if (!origin || allowedOrigins.includes(origin)) {
+      //     callback(null, true);
+      //   } else {
+      //     callback(new Error('Not allowed by CORS'));
+      //   }
+      // },
+      // credentials: true,
     })
   );
+
+  app.set('trust proxy', 1);
 
   app.use(json());
   app.use(limiter);
@@ -97,7 +106,10 @@ async function startApolloServer() {
 
         if (token) {
           try {
-            user = jwt.verify(token.replace('Bearer ', ''), env.JWT_SECRET);
+            user = jwt.verify(
+              token.replace('Bearer ', ''),
+              process.env.JWT_SECRET || ''
+            );
           } catch (error) {
             console.error('Invalid Token');
           }
@@ -107,9 +119,10 @@ async function startApolloServer() {
       },
     })
   );
+  const PORT = parseInt(process.env.PORT || '8080', 10);
 
-  app.listen(env.PORT, () => {
-    logger.info(`🚀 Server running at http://localhost:${env.PORT}/graphql`);
+  app.listen(PORT, '0.0.0.0', () => {
+    logger.info(`🚀 Server running at http://0.0.0.0:${PORT}/graphql`);
   });
 }
 
