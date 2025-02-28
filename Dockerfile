@@ -10,8 +10,6 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm prisma generate
-
 EXPOSE 8080
 
-CMD ["pnpm", "dev"]
+CMD ["pnpm", "run", "dev"]

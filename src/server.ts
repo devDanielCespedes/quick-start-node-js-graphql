@@ -11,8 +11,24 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import jwt from 'jsonwebtoken';
+import os from 'os';
 import { logger } from './config/logger';
 import { schema } from './graphql';
+
+const PORT = parseInt(process.env.PORT || '8080', 10);
+const HOST = process.env.HOST || '0.0.0.0';
+
+function getServerAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const net of interfaces[name] || []) {
+      if (net.family === 'IPv4' && !net.internal) {
+        return net.address;
+      }
+    }
+  }
+  return 'localhost';
+}
 
 dotenv.config();
 
@@ -25,7 +41,7 @@ const limiter = rateLimit({
 const allowedOrigins = [
   'https://localhost:5173',
   'https://localhost:4000',
-  'https://quick-start-node-js-graphql-production.up.railway.app',
+  'http://3.88.8.170:8080/graphql',
 ];
 
 async function startApolloServer() {
@@ -59,6 +75,7 @@ async function startApolloServer() {
   app.use(limiter);
   app.use(
     helmet({
+      hsts: false,
       crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: {
         directives: {
@@ -119,10 +136,16 @@ async function startApolloServer() {
       },
     })
   );
-  const PORT = parseInt(process.env.PORT || '8080', 10);
 
-  app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`🚀 Server running at http://0.0.0.0:${PORT}/graphql`);
+  const SERVER_ADDRESS = getServerAddress();
+
+  app.listen(PORT, HOST, () => {
+    logger.info(`🚀 Server running at:`);
+    if (process.env.NODE_ENV !== 'production') {
+      logger.info(`   - Local:   localhost:${PORT}/graphql`);
+    } else {
+      logger.info(`   - Network: https://${SERVER_ADDRESS}:${PORT}/graphql`);
+    }
   });
 }
 
