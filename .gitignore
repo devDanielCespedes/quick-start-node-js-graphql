@@ -7,7 +7,6 @@ postgres_data/
 
 # ⚡ IGNORANDO O PRISMA E BANCO DE DADOS
 prisma/.env
-prisma/migrations/
 prisma/db.sqlite
 prisma/dev.db
 prisma/studio.log
