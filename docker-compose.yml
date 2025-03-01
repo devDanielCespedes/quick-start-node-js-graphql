@@ -34,7 +34,7 @@ services:
       - .:/app
       - /app/node_modules
     command:
-      sh test.sh
+      sh prisma-init.sh
 
 volumes:
   postgres_data:
